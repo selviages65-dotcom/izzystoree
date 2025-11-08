@@ -1,0 +1,76 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #1e1e1e;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 400px;
+}
+
+h1 {
+    color: #bb86fc;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #bb86fc;
+    margin-top: 20px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="tel"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #373737;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #bb86fc;
+    color: #fff;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #6200ee;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button-group button {
+    flex: 1;
+    margin: 0 5px;
+}
+
+#login-message,
+#credentials-message,
+#action-message {
+    margin-top: 10px;
+    color: #ff4500;
+}
