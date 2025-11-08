@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Izzy Bug</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(160deg, #0a0015, #1a0028);
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CARD */
+.container {
+  width: 300px;
+  background: #120020;
+  border: 1px solid #3d006b;
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+/* TITLES */
+h1 {
+  margin: 0 0 15px 0;
+  font-size: 1.8em;
+  color: #d2b7ff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+h2 {
+  color: #b08fff;
+  font-size: 1.1em;
+  margin-bottom: 10px;
+}
+
+/* INPUTS */
+input {
+  width: 90%;
+  margin: 6px 0;
+  padding: 8px;
+  background: #1c0033;
+  border: 1px solid #5a009d;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 0.9em;
+  text-align: center;
+}
+input:focus {
+  border-color: #a86dff;
+  outline: none;
+}
+
+/* BUTTONS */
+button {
+  margin-top: 8px;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 5px;
+  background: #6a00cc;
+  color: #fff;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+button:hover {
+  background: #8a00ff;
+  transform: scale(1.03);
+}
+
+/* GROUP */
+.button-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* INFO TEXT */
+p {
+  font-size: 0.8em;
+  color: #cdb6ff;
+  margin-top: 10px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Izzy Bug</h1>
+
+  <!-- LOGIN -->
+  <div id="login-form">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button onclick="login()">Login</button>
+    <p id="login-message"></p>
+  </div>
+
+  <!-- OWNER -->
+  <div id="owner-panel" style="display:none;">
+    <h2>Owner Panel</h2>
+    <input type="text" id="new-username" placeholder="New Username" required>
+    <input type="password" id="new-password" placeholder="New Password" required>
+    <button onclick="createCredentials()">Create Credentials</button>
+    <p id="credentials-message"></p>
+
+    <hr style="border:1px solid #3d006b; margin:15px 0;">
+    <h2>Owner Menu</h2>
+    <input type="tel" id="owner-target" placeholder="Target Number" required>
+    <div class="button-group">
+      <button onclick="ownerSend('delay')">Delay Parah</button>
+      <button onclick="ownerSend('crash')">Crash WA</button>
+      <button onclick="ownerSend('forceclose')">Force Close</button>
+    </div>
+    <p id="owner-action-message"></p>
+  </div>
+
+  <!-- USER -->
+  <div id="user-panel" style="display:none;">
+    <h2>User Panel</h2>
+    <input type="tel" id="target-number" placeholder="Target Number" required>
+    <div class="button-group">
+      <button onclick="sendAction('delay')">Delay Parah</button>
+      <button onclick="sendAction('crash')">Crash WA</button>
+      <button onclick="sendAction('forceclose')">Force Close</button>
+    </div>
+    <p id="action-message"></p>
+  </div>
+</div>
+
+<script>
+const ownerUsername = "izzystore";
+const ownerPassword = "izzy1";
+let credentials = JSON.parse(localStorage.getItem("credentials")) || {};
+
+function saveCredentials(){
+  localStorage.setItem("credentials", JSON.stringify(credentials));
+}
+
+function login(){
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const msg = document.getElementById("login-message");
+
+  if (username === ownerUsername && password === ownerPassword) {
+    showPanel("owner");
+  } else if (credentials[username] === password) {
+    showPanel("user");
+  } else {
+    msg.textContent = "❌ Username atau password salah.";
+  }
+}
+
+function showPanel(type){
+  document.getElementById("login-form").style.display = "none";
+  document.getElementById("owner-panel").style.display = type === "owner" ? "block" : "none";
+  document.getElementById("user-panel").style.display = type === "user" ? "block" : "none";
+}
+
+function createCredentials(){
+  const nU = document.getElementById("new-username").value.trim();
+  const nP = document.getElementById("new-password").value.trim();
+  const credMsg = document.getElementById("credentials-message");
+  if(nU && nP){
+    credentials[nU] = nP;
+    saveCredentials();
+    credMsg.textContent = "✅ User baru dibuat!";
+    document.getElementById("new-username").value = "";
+    document.getElementById("new-password").value = "";
+  } else {
+    credMsg.textContent = "⚠️ Isi semua kolom.";
+  }
+}
+
+function sendAction(a){
+  const target = document.getElementById("target-number").value.trim();
+  const msg = document.getElementById("action-message");
+  if(!target){ msg.textContent = "⚠️ Masukkan target."; return; }
+  msg.textContent = `✅ Simulasi ${a} ke ${target} berhasil (offline).`;
+}
+
+function ownerSend(a){
+  const target = document.getElementById("owner-target").value.trim();
+  const msg = document.getElementById("owner-action-message");
+  if(!target){ msg.textContent = "⚠️ Masukkan target."; return; }
+  msg.textContent = `✅ Simulasi ${a} ke ${target} berhasil (offline).`;
+}
+</script>
+</body>
+</html>
